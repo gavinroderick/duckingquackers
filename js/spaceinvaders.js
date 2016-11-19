@@ -291,7 +291,7 @@ function PlayState(config, level) {
     //  Game state.
     this.invaderCurrentVelocity =  10;
     this.invaderCurrentDropDistance =  0;
-    this.invadersAreDropping =  false;
+    this.invadersAreDropping =  true;
     this.lastRocketTime = null;
 
     //  Game entities.
@@ -306,6 +306,10 @@ PlayState.prototype.enter = function(game) {
 
     //  Create the ship.
     this.ship = new Ship(game.width / 2, game.gameBounds.bottom);
+
+
+    //Create the wall
+    this.wall = new Wall
 
     //  Setup initial state.
     this.invaderCurrentVelocity =  10;
@@ -336,6 +340,9 @@ PlayState.prototype.enter = function(game) {
     this.invaderCurrentVelocity = this.invaderInitialVelocity;
     this.invaderVelocity = {x: -this.invaderInitialVelocity, y:0};
     this.invaderNextVelocity = null;
+
+    //create the wall
+    var wallRank = 1;
 };
 
 PlayState.prototype.update = function(game, dt) {
@@ -531,6 +538,13 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     ctx.fillStyle = '#999999';
     ctx.fillRect(this.ship.x - (this.ship.width / 2), this.ship.y - (this.ship.height / 2), this.ship.width, this.ship.height);
 
+    // Draw wall
+    ctx.fillStyle = '#75472A';
+    for(var i=0; i < this.wall.length; i++){
+        var wall = this.wall[i];
+        ctx.fillRect(wall.x - wall.width/2, wall.y - wall.height/2, wall.width, wall.height);
+    }
+
     //  Draw invaders.
     ctx.fillStyle = '#006600';
     for(var i=0; i<this.invaders.length; i++) {
@@ -672,18 +686,12 @@ LevelIntroState.prototype.draw = function(game, dt, ctx) {
     ctx.textAlign="center"; 
     ctx.fillText("Level " + this.level, game.width / 2, game.height/2);
     ctx.font="24px Arial";
-    ctx.fillText("Ready in " + this.countdownMessage, game.width / 2, game.height/2 + 36);      
+    ctx.fillText("Making America Great Again in " + this.countdownMessage, game.width / 2, game.height/2 + 36);      
     return;
 };
 
 
-/*
- 
-  Ship
-
-  The ship has a position and that's about it.
-
-*/
+/* Ship - The ship has a position and that's about it. */
 function Ship(x, y) {
     this.x = x;
     this.y = y;
@@ -691,30 +699,27 @@ function Ship(x, y) {
     this.height = 16;
 }
 
-/*   Rocket
-
-    Fired by the ship, they've got a position, velocity and state.  */
+/* Wall - Walls are built up by shooting the blocks, and torn down by the invader */
+function Wall(x, y, width, height){
+    this.x = x;
+    this.y = y;
+    this.width = 18;
+    this.height = 14;
+}
+/* Rocket - Fired by the ship, they've got a position, velocity and state. */
 function Rocket(x, y, velocity) {
     this.x = x;
     this.y = y;
     this.velocity = velocity;
 }
 
-
-/*  Bomb
-    Dropped by invaders, they've got position, velocity. */
+/* Bomb - Dropped by invaders, they've got position, velocity. */
 function Bomb(x, y, velocity) {
     this.x = x;
     this.y = y;
     this.velocity = velocity;
 }
- 
-/*
-    Invader 
-
-    Invader's have position, type, rank/file and that's about it. 
-*/
-
+/* Invader - Invader's have position, type, rank/file and that's about it. */
 function Invader(x, y, rank, file, type) {
     this.x = x;
     this.y = y;
@@ -731,7 +736,6 @@ function Invader(x, y, rank, file, type) {
     When a game is in the state, the update and draw procs are
     called, with a dt value (dt is delta time, i.e. the number)
     of seconds to update or draw). */
-
 function GameState(updateProc, drawProc, keyDown, keyUp, enter, leave) {
     this.updateProc = updateProc;
     this.drawProc = drawProc;
