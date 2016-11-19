@@ -299,7 +299,7 @@ function PlayState(config, level) {
     this.invaders = [];
     this.rockets = [];
     this.bombs = [];
-    this.wall=[]
+    this.wallBlocks=[]
 }
 
 PlayState.prototype.enter = function(game) {
@@ -342,7 +342,19 @@ PlayState.prototype.enter = function(game) {
     this.invaderNextVelocity = null;
 
     //create the wall
-    var wallRank = 1;
+    var wallRank = 2;
+    var wallFiles=10;
+    var wallBlocks = [];
+    for(var rank = 0; rank < wallRank; rank++){
+        for(var file = 0; file < wallFiles; file++) {
+            wallBlocks.push(new Wall(
+                        (game.width / 2) + ((wallFiles/2 - file) * 200 / wallFiles),
+                        (game.gameBounds.top + rank * 40)
+                        ));
+
+        }
+    }
+    this.wallBlocks = wallBlocks;
 };
 
 PlayState.prototype.update = function(game, dt) {
@@ -700,7 +712,7 @@ function Ship(x, y) {
 }
 
 /* Wall - Walls are built up by shooting the blocks, and torn down by the invader */
-function Wall(x, y, width, height){
+function Wall(x, y){
     this.x = x;
     this.y = y;
     this.width = 18;
