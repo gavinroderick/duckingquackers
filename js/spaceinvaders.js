@@ -500,7 +500,7 @@ PlayState.prototype.update = function(game, dt) {
         var chance = this.bombRate * dt;
         if(chance > Math.random()) {
             //  Fire!
-            this.bombs.push(new Bomb(invader.x, invader.y + invader.height / 2, 
+            this.bombs.push(new Bomb(invader.x, invader.y + invader.height/2, 
                 this.bombMinVelocity + Math.random()*(this.bombMaxVelocity - this.bombMinVelocity)));
         }
     }
@@ -594,23 +594,22 @@ PlayState.prototype.draw = function(game, dt, ctx) {
         ctx.fillRect(invader.x - invader.width/2, invader.y - invader.height/2, invader.width, invader.height);
     }
 
-    //  Draw bombs.h
+    //  Draw bombs.
     ctx.fillStyle = '#ff5555';
     
   
-    mexicans = new Array();
+  
     for(var i=0; i<this.bombs.length; i++) {
         var bomb = this.bombs[i];
         
        
         
-        ctx.drawImage(bomb.image,bomb.x - 2,  bomb.y - 2);
+        ctx.drawImage(bomb.image,(bomb.x) - 40,  (bomb.y) - 75 );
         
-        //ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
+    
     }
 
-    //  Draw rockets.
-    //ctx.fillStyle = '#ff0000';
+   
   
     
     for(var i=0; i<this.rockets.length; i++) {
