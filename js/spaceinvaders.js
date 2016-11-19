@@ -638,7 +638,7 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     var info = "Mexicans Caught: " + game.lives;
     ctx.textAlign = "left";
     ctx.fillText(info, game.gameBounds.left, textYpos);
-    info = "Score: " + game.score + ", Level: " + game.level;
+    info = "Wall Strength: " + game.score + ", Level: " + game.level;
     ctx.textAlign = "right";
     ctx.fillText(info, game.gameBounds.right, textYpos);
 
@@ -677,6 +677,7 @@ PlayState.prototype.fireRocket = function() {
         //  Add a rocket.
         this.rockets.push(new Rocket(this.ship.x, this.ship.y - 12, this.config.rocketVelocity));
         this.lastRocketTime = (new Date()).valueOf();
+        game.score = game.score - 1;
 
         //  Play the 'shoot' sound.
         game.sounds.playSound('shoot');
