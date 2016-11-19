@@ -299,6 +299,7 @@ function PlayState(config, level) {
     this.invaders = [];
     this.rockets = [];
     this.bombs = [];
+    this.wall=[]
 }
 
 PlayState.prototype.enter = function(game) {
@@ -385,6 +386,7 @@ PlayState.prototype.update = function(game, dt) {
 
     //  Move the invaders.
     var hitLeft = false, hitRight = false, hitBottom = false;
+    
     for(i=0; i<this.invaders.length; i++) {
         var invader = this.invaders[i];
         var newx = invader.x + this.invaderVelocity.x * dt;
@@ -401,7 +403,7 @@ PlayState.prototype.update = function(game, dt) {
 
         if(!hitLeft && !hitRight && !hitBottom) {
             invader.x = newx;
-            invader.y = newy;
+            //invader.y = newy;
         }
     }
 
@@ -554,7 +556,7 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     var textYpos = game.gameBounds.bottom + ((game.height - game.gameBounds.bottom) / 2) + 14/2;
     ctx.font="14px Arial";
     ctx.fillStyle = '#ffffff';
-    var info = "Lives: " + game.lives;
+    var info = "Mexicans Caught: " + game.lives;
     ctx.textAlign = "left";
     ctx.fillText(info, game.gameBounds.left, textYpos);
     info = "Score: " + game.score + ", Level: " + game.level;
