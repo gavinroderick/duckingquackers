@@ -604,7 +604,7 @@ PlayState.prototype.draw = function(game, dt, ctx) {
         
        
         
-        ctx.drawImage(bomb.image,(bomb.x) - 40,  (bomb.y) - 75 );
+        ctx.drawImage(bomb.image,(bomb.x) - 40,  (bomb.y) - 85 );
         
     
     }
