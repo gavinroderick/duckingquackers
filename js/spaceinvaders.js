@@ -333,8 +333,8 @@ PlayState.prototype.enter = function(game) {
     for(var rank = 0; rank < ranks; rank++){
         for(var file = 0; file < files; file++) {
             invaders.push(new Invader(
-                (game.width / 2) + ((files/2 - file) * 200 / files),
-                (game.gameBounds.top + rank * 20),
+                (game.width / 2) + ((files/2 - file) * 300 / files),
+                (game.gameBounds.top + rank * 23),
                 rank, file, 'Invader'));
         }
     }
@@ -464,8 +464,8 @@ PlayState.prototype.update = function(game, dt) {
         for(var j=0; j<this.rockets.length; j++){
             var rocket = this.rockets[j];
 
-            if(rocket.x >= (invader.x - invader.width/2) && rocket.x <= (invader.x + invader.width/2) &&
-                rocket.y >= (invader.y - invader.height/2) && rocket.y <= (invader.y + invader.height/2)) {
+            if(rocket.x >= (invader.x - invader.width/1.2) && rocket.x <= (invader.x + invader.width/1.2) &&
+                rocket.y >= (invader.y - invader.height/1.5) && rocket.y <= (invader.y + invader.height/1.5)) {
                 
                 //  Remove the rocket, set 'bang' so we don't process
                 //  this rocket again.
@@ -573,7 +573,7 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     var trumpImg = new Image();
     trumpImg.src = 'img/trumpSprite1.png';
    
-    ctx.drawImage(trumpImg, this.ship.x - (this.ship.width / 2) - 30, (this.ship.y - (this.ship.height / 2)) - 30);	
+    ctx.drawImage(trumpImg, this.ship.x - (this.ship.width / 2) - 30, (this.ship.y - (this.ship.height / 2)) + 5);	
     
     
     // Draw wall
@@ -596,9 +596,17 @@ PlayState.prototype.draw = function(game, dt, ctx) {
 
     //  Draw bombs.h
     ctx.fillStyle = '#ff5555';
+    
+  
+    mexicans = new Array();
     for(var i=0; i<this.bombs.length; i++) {
         var bomb = this.bombs[i];
-        ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
+        
+       
+        
+        ctx.drawImage(bomb.image,bomb.x - 2,  bomb.y - 2);
+        
+        //ctx.fillRect(bomb.x - 2, bomb.y - 2, 4, 4);
     }
 
     //  Draw rockets.
@@ -726,7 +734,7 @@ LevelIntroState.prototype.update = function(game, dt) {
     if(this.countdown < 1) { 
         this.countdownMessage = "1"; 
     } 
-    if(this.countdown <= 0) {
+    if(this.countdown <= 3) {
         //  Move to the next level, popping this state.
         game.moveToState(new PlayState(game.config, this.level));
     }
@@ -753,8 +761,8 @@ LevelIntroState.prototype.draw = function(game, dt, ctx) {
 function Ship(x, y) {
     this.x = x;
     this.y = y;
-    this.width = 20;
-    this.height = 16;
+    this.width = 50;
+    this.height = 120;
 }
 
 /* Wall - Walls are built up by shooting the blocks, and torn down by the invader */
@@ -777,6 +785,9 @@ function Bomb(x, y, velocity) {
     this.x = x;
     this.y = y;
     this.velocity = velocity;
+    rand = Math.floor((Math.random() * 4) + 1);
+    this.image = new Image();
+    this.image.src = ('img/mexican' + rand +'.png');
 }
 /* Invader - Invader's have position, type, rank/file and that's about it. */
 function Invader(x, y, rank, file, type) {
@@ -785,8 +796,8 @@ function Invader(x, y, rank, file, type) {
     this.rank = rank;
     this.file = file;
     this.type = type;
-    this.width = 18;
-    this.height = 14;
+    this.width = 25;
+    this.height = 18;
 }
 
 /*  Game State
