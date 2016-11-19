@@ -82,6 +82,13 @@ Game.prototype.initialise = function(gameCanvas) {
         top: gameCanvas.height / 2 - this.config.gameHeight / 2,
         bottom: gameCanvas.height / 2 + this.config.gameHeight / 2,
     };
+    
+  
+	
+	
+	
+	
+	
 };
 
 Game.prototype.moveToState = function(state) {
@@ -547,6 +554,11 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     ctx.clearRect(0, 0, game.width, game.height);
     
     //  Draw ship.
+  /*  var trumpImg = new Image();
+    trumpImg.src = 'img/trumpSprite.png';
+    trumpImg.onload = function(){
+    	  ctx.drawImage(brickImg, this.ship.x - (this.ship.width / 2), this.ship.y - (this.ship.height / 2));	
+    }*/	
     ctx.fillStyle = '#999999';
     ctx.fillRect(this.ship.x - (this.ship.width / 2), this.ship.y - (this.ship.height / 2), this.ship.width, this.ship.height);
 
@@ -564,7 +576,7 @@ PlayState.prototype.draw = function(game, dt, ctx) {
         ctx.fillRect(invader.x - invader.width/2, invader.y - invader.height/2, invader.width, invader.height);
     }
 
-    //  Draw bombs.
+    //  Draw bombs.h
     ctx.fillStyle = '#ff5555';
     for(var i=0; i<this.bombs.length; i++) {
         var bomb = this.bombs[i];
@@ -572,10 +584,26 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     }
 
     //  Draw rockets.
-    ctx.fillStyle = '#ff0000';
+    //ctx.fillStyle = '#ff0000';
+  
+    
     for(var i=0; i<this.rockets.length; i++) {
         var rocket = this.rockets[i];
-        ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
+        var brick = new Image();
+        brick.src = 'img/brick.jpg';
+     
+        //loading brick image
+        
+        
+        
+    	brick.onload = function(){
+    		
+    		   ctx.drawImage(brick,rocket.x, rocket.y);	
+    	};
+        
+        
+      
+      // ctx.fillRect(rocket.x, rocket.y - 2, 1, 4);
     }
 
     //  Draw info.
