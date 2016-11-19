@@ -46,12 +46,12 @@ function Game() {
     };
 
     //  All state is in the variables below.
-    this.lives = 3;
+    this.lives = 0;
     this.width = 0;
     this.height = 0;
     this.gameBounds = {left: 0, top: 0, right: 0, bottom: 0};
     this.intervalId = 0;
-    this.score = 0;
+    this.score = 50;
     this.level = 1;
 
     //  The state stack.
@@ -111,7 +111,7 @@ Game.prototype.start = function() {
     this.moveToState(new WelcomeState());
 
     //  Set the game variables.
-    this.lives = 3;
+    this.lives = 0;
     this.config.debugMode = /debug=true/.test(window.location.href);
 
     //  Start the game loop.
@@ -344,14 +344,14 @@ PlayState.prototype.enter = function(game) {
     this.invaderNextVelocity = null;
 
     //create the wall
-    var wallRank = 2;
+    var wallRank = 3;
     var wallFiles=10;
     var wallBlocks = [];
     for(var rank = 0; rank < wallRank; rank++){
         for(var file = 0; file < wallFiles; file++) {
             wallBlocks.push(new Wall(
                         (game.width / 2) + ((wallFiles/2 - file) * 200 / wallFiles),
-                        (game.gameBounds.top + rank * 40)
+                        (game.gameBounds.top + 250)
                         ));
 
         }
@@ -418,9 +418,9 @@ PlayState.prototype.update = function(game, dt) {
         else if(hitRight == false && newx > game.gameBounds.right) {
             hitRight = true;
         }
-        else if(hitBottom == false && newy > game.gameBounds.bottom) {
-            hitBottom = true;
-        }
+        // else if(hitBottom == false && newy > game.gameBounds.bottom) {
+        //     hitBottom = true;
+        // }
 
         if(!hitLeft && !hitRight && !hitBottom) {
             invader.x = newx;
@@ -517,6 +517,27 @@ PlayState.prototype.update = function(game, dt) {
                 
     }
 
+    //  Check for bomb/ship collisions.
+    for(var i=0; i<this.bombs.length; i++) {
+        var bomb = this.bombs[i];
+        for(var j=0; j<this.wallBlocks.length; j++) {
+            var wall = this.wallBlocks[j];
+            if(bomb.x >= (wall.x - wall.width/2) && bomb.x <= (wall.x + wall.width/2) &&
+                    bomb.y >= (wall.y - wall.height/2) && bomb.y <= (wall.y + wall.height/2)) {
+                this.bombs.splice(i--, 1);
+                bombCollision();
+                break;
+            }
+        }
+    }
+
+    function bombCollision(){
+        game.score = game.score - 5;
+        game.sounds.playSound('explosion');
+    }
+
+
+
     //  Check for invader/ship collisions.
     for(var i=0; i<this.invaders.length; i++) {
         var invader = this.invaders[i];
@@ -555,12 +576,15 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     ctx.drawImage(trumpImg, this.ship.x - (this.ship.width / 2) - 30, (this.ship.y - (this.ship.height / 2)) - 30);	
     
     
-
     // Draw wall
+    var wallImg = new Image();
+    wallImg.src = 'img/brick1.png';
+
     ctx.fillStyle = '#75472A';
-    for(var i=0; i < this.wall.length; i++){
-        var wall = this.wall[i];
-        ctx.fillRect(wall.x - wall.width/2, wall.y - wall.height/2, wall.width, wall.height);
+    for(var i=0; i < this.wallBlocks.length; i++){
+        var wall = this.wallBlocks[i];
+        ctx.drawImage(wallImg, wall.x - wall.width/2, wall.y - wall.height/2, wall.width, wall.height)
+        //ctx.fillRect(wall.x - wall.width/2, wall.y - wall.height/2, wall.width, wall.height);
     }
 
     //  Draw invaders.
@@ -740,6 +764,7 @@ function Wall(x, y){
     this.width = 18;
     this.height = 14;
 }
+
 /* Rocket - Fired by the ship, they've got a position, velocity and state. */
 function Rocket(x, y, velocity) {
     this.x = x;
