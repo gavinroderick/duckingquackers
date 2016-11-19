@@ -82,11 +82,11 @@ Starfield.prototype.draw = function() {
 	var ctx = this.canvas.getContext("2d");
 
 	//	Draw the background.
- 	ctx.fillStyle = '#EDC9AF';
+ 	ctx.fillStyle = '#c2b280';
 	ctx.fillRect(0, 0, this.width, this.height);
 
 	//	Draw stars.
-	ctx.fillStyle = '#00ff00';
+	ctx.fillStyle = '#a69150';
 	for(var i=0; i<this.stars.length;i++) {
 		var star = this.stars[i];
 		ctx.fillRect(star.x, star.y, star.size, star.size);
