@@ -345,13 +345,13 @@ PlayState.prototype.enter = function(game) {
 
     //create the wall
     var wallRank = 3;
-    var wallFiles=10;
+    var wallFiles=30;
     var wallBlocks = [];
     for(var rank = 0; rank < wallRank; rank++){
         for(var file = 0; file < wallFiles; file++) {
             wallBlocks.push(new Wall(
-                        (game.width / 2) + ((wallFiles/2 - file) * 200 / wallFiles),
-                        (game.gameBounds.top + 250)
+                        (game.width / 2) + ((wallFiles/2 - file) * 500 / wallFiles),
+                        (game.gameBounds.bottom +70)
                         ));
 
         }
@@ -573,12 +573,12 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     var trumpImg = new Image();
     trumpImg.src = 'img/trumpSprite1.png';
    
-    ctx.drawImage(trumpImg, this.ship.x - (this.ship.width / 2) - 30, (this.ship.y - (this.ship.height / 2)) + 5);	
+    ctx.drawImage(trumpImg, this.ship.x - (this.ship.width / 2) - 30, (this.ship.y - (this.ship.height / 2)) - 34);	
     
     
     // Draw wall
     var wallImg = new Image();
-    wallImg.src = 'img/brick1.png';
+    wallImg.src = 'img/brick_tile.png';
 
     ctx.fillStyle = '#75472A';
     for(var i=0; i < this.wallBlocks.length; i++){
@@ -632,7 +632,7 @@ PlayState.prototype.draw = function(game, dt, ctx) {
     }
 
     //  Draw info.
-    var textYpos = game.gameBounds.bottom + ((game.height - game.gameBounds.bottom) / 2) + 14/2;
+    var textYpos = game.gameBounds.bottom + ((game.height - game.gameBounds.bottom + 100) / 2) + 14/2;
     ctx.font="14px Arial";
     ctx.fillStyle = '#ffffff';
     var info = "Mexicans Caught: " + game.lives;
@@ -761,7 +761,7 @@ function Ship(x, y) {
     this.x = x;
     this.y = y;
     this.width = 50;
-    this.height = 120;
+    this.height = 50;
 }
 
 /* Wall - Walls are built up by shooting the blocks, and torn down by the invader */
@@ -769,7 +769,7 @@ function Wall(x, y){
     this.x = x;
     this.y = y;
     this.width = 18;
-    this.height = 14;
+    this.height = 30;
 }
 
 /* Rocket - Fired by the ship, they've got a position, velocity and state. */
